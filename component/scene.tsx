@@ -120,31 +120,37 @@ export default function Scene() {
   console.log(bgImage, "image")
 
   useGSAP(() => {
-    if (!bgRef.current) return;
-  
-    gsap.to(bgRef.current, {
-      opacity: bgImage ? 1 : 0,
-      duration: 0.8,
-      ease: "power2.out",
-    });
-  
-    const tl = gsap.timeline();
-    tl.from(".line", {
-      scaleX: 0,
-      transformOrigin: "center center",
-      duration: 1,
-      ease: "power3.out",
-      stagger: 0.2,
-    });
-    tl.from(".word", {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      stagger: 0.3,
-    }, "<");
-  }, { dependencies: [bgImage] });
-  
+  const tl = gsap.timeline();
+
+  tl.from(".line", {
+    scaleX: 0,
+    transformOrigin: "center center",
+    duration: 1,
+    ease: "power3.out",
+    stagger: 0.2,
+  });
+
+  tl.from(".word", {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out",
+    stagger: 0.3,
+  }, "<");
+
+}, []); // 👈 NO dependencies → runs once
+
+useGSAP(() => {
+  if (!bgRef.current) return;
+
+  gsap.to(bgRef.current, {
+    opacity: bgImage ? 1 : 0,
+    duration: 0.8,
+    ease: "power2.out",
+  });
+
+}, { dependencies: [bgImage] });
+
 
    useEffect(() => {
     const cursor = document.getElementById("custom-cursor");

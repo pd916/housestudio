@@ -109,6 +109,11 @@ export default function Scene() {
   const bgRef = useRef<HTMLDivElement>(null);
   const headline = useRef<HTMLHeadingElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+   const [mounted, setMounted] = useState(false); // 1. Add this
+
+  useEffect(() => {
+    setMounted(true); // 2. Set to true on mount
+  }, []);
 
   useEffect(() => { 
     const check = () => setIsMobile(window.innerWidth < 768);  
@@ -165,6 +170,8 @@ useGSAP(() => {
     window.addEventListener("mousemove", handleMove);
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
+
+  if (!mounted) return null;
 
   
   return (

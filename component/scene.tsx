@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas} from "@react-three/fiber";
-import { Environment, OrbitControls, useGLTF } from "@react-three/drei";
+import { Environment, useGLTF } from "@react-three/drei";
 import { Suspense, useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -109,11 +109,7 @@ export default function Scene() {
   const bgRef = useRef<HTMLDivElement>(null);
   const headline = useRef<HTMLHeadingElement>(null);
   const [isMobile, setIsMobile] = useState(false);
-   const [mounted, setMounted] = useState(false); // 1. Add this
 
-  useEffect(() => {
-    setMounted(true); // 2. Set to true on mount
-  }, []);
 
   useEffect(() => { 
     const check = () => setIsMobile(window.innerWidth < 768);  
@@ -171,7 +167,6 @@ useGSAP(() => {
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
 
-  if (!mounted) return null;
 
   
   return (
@@ -289,7 +284,8 @@ useGSAP(() => {
         <Suspense fallback={null}>
            <group rotation={[0.1, -0.1, 0.3]} position={isMobile ? [8, -10, 0] : [16, -32, 0]} scale={isMobile ? 0.9 : 1}> 
       <Model isMobile={isMobile}/>
-      <Environment preset="sunset" />
+      
+      <Environment files="/sunset.hdr" background={false}/>
     </group>
     
         </Suspense>
